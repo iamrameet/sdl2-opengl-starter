@@ -1,0 +1,75 @@
+# Build directories
+build/
+out/
+
+# External dependencies
+external/
+
+# Keep bin and lib directories but not their contents
+!bin/
+!lib/
+bin/*
+lib/*
+!bin/.gitkeep
+!lib/.gitkeep
+
+# Keep SDL2.dll and shader files
+!bin/SDL2.dll
+!bin/assets/
+!bin/assets/shaders/
+!bin/assets/shaders/*.vert
+!bin/assets/shaders/*.frag
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# IDE files
+.vs/
+.vscode/
+*.swp
+*.swo
+.idea/
+*.iml
+*.user
+*.suo
+*.db
+*.opendb
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

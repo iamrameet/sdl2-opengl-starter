@@ -22,6 +22,9 @@ if ($Clean) {
     if (Test-Path "*.obj") {
         Remove-Item "*.obj" -Force
     }
+    if (Test-Path "build\obj") {
+        Remove-Item "build\obj\*" -Force -Recurse
+    }
     Write-Host "Clean completed." -ForegroundColor Green
     if (-not ($CompileOnly -or $RunOnly)) {
         exit 0
@@ -54,9 +57,14 @@ if (-not $RunOnly) {
         exit 1
     }
 
+    # Create obj directory if it doesn't exist
+    if (-not (Test-Path "build\obj")) {
+        New-Item -Path "build\obj" -ItemType Directory -Force | Out-Null
+    }
+
     # Compile the program
     Write-Host "Compiling the program..." -ForegroundColor Green
-    & cl /EHsc /W4 /I"external\SDL2\include" /I"external\GLAD\include" src\main.cpp external\GLAD\src\glad.c /Fe:bin\sdl_app.exe /link "external\SDL2\lib\x64\SDL2.lib" "external\SDL2\lib\x64\SDL2main.lib" opengl32.lib Shell32.lib /SUBSYSTEM:CONSOLE
+    & cl /EHsc /W4 /I"include" /I"external\SDL2\include" /I"external\GLAD\include" /I"external\GLM\include" /Fo"build\obj\\" src\main.cpp src\Core\Game.cpp src\Core\GameObject.cpp src\Graphics\Shader.cpp src\Graphics\Renderer.cpp src\UI\UISystem.cpp src\GameObjects\Triangle.cpp external\GLAD\src\glad.c /Fe:bin\sdl_app.exe /link "external\SDL2\lib\x64\SDL2.lib" "external\SDL2\lib\x64\SDL2main.lib" opengl32.lib Shell32.lib /SUBSYSTEM:CONSOLE
 
     # Check if compilation was successful
     if ($LASTEXITCODE -eq 0) {

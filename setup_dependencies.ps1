@@ -37,20 +37,20 @@ $sdl2ZipPath = "SDL2.zip"
 try {
     Invoke-WebRequest -Uri $sdl2Url -OutFile $sdl2ZipPath
     Write-Host "  SDL2 downloaded successfully" -ForegroundColor Green
-    
+
     # Extract SDL2
     Write-Host "Extracting SDL2..." -ForegroundColor Cyan
     Expand-Archive -Path $sdl2ZipPath -DestinationPath "temp_sdl2" -Force
-    
+
     # Copy files to the right locations
     Write-Host "Copying SDL2 files..." -ForegroundColor Cyan
     Copy-Item -Path "temp_sdl2/SDL2-2.28.5/include/*" -Destination "external/SDL2/include/" -Recurse -Force
     Copy-Item -Path "temp_sdl2/SDL2-2.28.5/lib/x64/*" -Destination "external/SDL2/lib/x64/" -Force
-    
+
     # Clean up
     Remove-Item -Path $sdl2ZipPath -Force
     Remove-Item -Path "temp_sdl2" -Recurse -Force
-    
+
     Write-Host "  SDL2 setup completed" -ForegroundColor Green
 } catch {
     Write-Host "  Failed to download or extract SDL2: $_" -ForegroundColor Red
@@ -75,4 +75,5 @@ Write-Host "   - khrplatform.h → place in external/GLAD/include/KHR/" -Foregro
 Write-Host "   - glad.c → place in external/GLAD/src/" -ForegroundColor Yellow
 
 Write-Host "`nDependency setup completed!" -ForegroundColor Green
-Write-Host "You can now build the project using compile_and_run.ps1" -ForegroundColor Green
+Write-Host "You can now build the project by running:" -ForegroundColor Green
+Write-Host "  .\compile_and_run.ps1" -ForegroundColor Cyan

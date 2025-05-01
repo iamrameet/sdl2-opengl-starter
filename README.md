@@ -20,22 +20,25 @@ A simple cross-platform application using SDL2 and OpenGL with GLAD. This projec
 ├── external/          # External dependencies
 │   ├── GLAD/          # OpenGL loader
 │   └── SDL2/          # Simple DirectMedia Layer
+├── include/           # Header files
 ├── lib/               # Library files
 ├── src/               # Source code
+│   ├── Core/          # Core game components
+│   ├── GameObjects/   # Game object implementations
+│   ├── Graphics/      # Rendering components
+│   ├── UI/            # User interface components
 │   └── main.cpp       # Main application code
-├── build.bat          # Build script using CMake
-├── CMakeLists.txt     # CMake build configuration
-├── compile_and_run.ps1 # PowerShell build script
-├── compile_and_run_vs.bat # Batch file for Visual Studio compilation
+├── CMakeLists.txt     # CMake build configuration (alternative build)
+├── compile_and_run.ps1 # PowerShell build script (primary build method)
 └── README.md          # This file
 ```
 
 ## Building and Running
 
-### Using PowerShell (Recommended)
+This project uses a simple PowerShell script for building and running. The script automatically sets up the Visual Studio environment, compiles the code, and handles asset copying.
 
 ```powershell
-# Build and run
+# Build and run (default)
 .\compile_and_run.ps1
 
 # Build only
@@ -48,20 +51,9 @@ A simple cross-platform application using SDL2 and OpenGL with GLAD. This projec
 .\compile_and_run.ps1 -Clean
 ```
 
-### Using Visual Studio Batch File
+### Alternative: Using CMake
 
-```batch
-compile_and_run_vs.bat
-```
-
-### Using CMake
-
-1. Run the build script:
-   ```
-   build.bat
-   ```
-
-Or manually:
+If you prefer using CMake, you can build the project manually:
 
 ```bash
 # Create a build directory
@@ -76,26 +68,6 @@ cmake --build . --config Release
 
 # Run the program
 .\bin\Release\sdl_app.exe
-```
-
-### Manual Compilation with Visual C++
-
-```bash
-# In the Developer Command Prompt
-cl /EHsc /I"external\SDL2\include" /I"external\GLAD\include" src\main.cpp external\GLAD\src\glad.c /Fe:bin\sdl_app.exe /link "external\SDL2\lib\x64\SDL2.lib" "external\SDL2\lib\x64\SDL2main.lib" opengl32.lib Shell32.lib /SUBSYSTEM:CONSOLE
-
-# Copy SDL2.dll to bin directory
-copy "external\SDL2\lib\x64\SDL2.dll" "bin\"
-
-# Create shader directory
-mkdir "bin\assets\shaders"
-
-# Copy shader files
-copy "assets\shaders\basic.vert" "bin\assets\shaders\"
-copy "assets\shaders\basic.frag" "bin\assets\shaders\"
-
-# Run the program
-bin\sdl_app.exe
 ```
 
 ## Controls

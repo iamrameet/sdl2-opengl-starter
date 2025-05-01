@@ -64,7 +64,7 @@ if (-not $RunOnly) {
 
     # Compile the program
     Write-Host "Compiling the program..." -ForegroundColor Green
-    & cl /EHsc /W4 /I"include" /I"external\SDL2\include" /I"external\GLAD\include" /I"external\GLM\include" /Fo"build\obj\\" src\main.cpp src\Core\Game.cpp src\Core\GameObject.cpp src\Graphics\Shader.cpp src\Graphics\Renderer.cpp src\UI\UISystem.cpp src\GameObjects\Triangle.cpp external\GLAD\src\glad.c /Fe:bin\sdl_app.exe /link "external\SDL2\lib\x64\SDL2.lib" "external\SDL2\lib\x64\SDL2main.lib" opengl32.lib Shell32.lib /SUBSYSTEM:CONSOLE
+    & cl /EHsc /W4 /I"engine\include" /I"game\include" /I"third_party\SDL2\include" /I"third_party\GLAD\include" /I"third_party\GLM\include" /Fo"build\obj\\" game\src\main.cpp engine\src\Application.cpp engine\src\GameObject.cpp engine\src\Shader.cpp engine\src\Renderer.cpp engine\src\UISystem.cpp game\src\TopDownShooterGame.cpp game\src\Player.cpp game\src\Enemy.cpp game\src\Projectile.cpp game\src\Level.cpp third_party\GLAD\src\glad.c /Fe:bin\gameClient.exe /link "third_party\SDL2\lib\x64\SDL2.lib" "third_party\SDL2\lib\x64\SDL2main.lib" opengl32.lib Shell32.lib /SUBSYSTEM:CONSOLE
 
     # Check if compilation was successful
     if ($LASTEXITCODE -eq 0) {
@@ -72,15 +72,15 @@ if (-not $RunOnly) {
 
         # Copy SDL2.dll to bin directory
         Write-Host "Copying SDL2.dll to bin directory..." -ForegroundColor Cyan
-        Copy-Item "external\SDL2\lib\x64\SDL2.dll" "bin\" -Force
+        Copy-Item "third_party\SDL2\lib\x64\SDL2.dll" "bin\" -Force
 
         # Create shader directory and copy shader files
         Write-Host "Copying shader files..." -ForegroundColor Cyan
-        if (-not (Test-Path "bin\assets\shaders")) {
-            New-Item -Path "bin\assets\shaders" -ItemType Directory -Force | Out-Null
+        if (-not (Test-Path "bin\shaders")) {
+            New-Item -Path "bin\shaders" -ItemType Directory -Force | Out-Null
         }
-        Copy-Item "assets\shaders\basic.vert" "bin\assets\shaders\" -Force
-        Copy-Item "assets\shaders\basic.frag" "bin\assets\shaders\" -Force
+        Copy-Item "shaders\basic.vert" "bin\shaders\" -Force
+        Copy-Item "shaders\basic.frag" "bin\shaders\" -Force
     } else {
         Write-Host "Compilation failed!" -ForegroundColor Red
         exit 1
@@ -90,7 +90,7 @@ if (-not $RunOnly) {
 # Skip running if CompileOnly is specified
 if (-not $CompileOnly) {
     # Check if executable exists
-    if (-not (Test-Path "bin\sdl_app.exe")) {
+    if (-not (Test-Path "bin\gameClient.exe")) {
         Write-Host "Executable not found. Please compile the program first." -ForegroundColor Red
         exit 1
     }
@@ -98,7 +98,7 @@ if (-not $CompileOnly) {
     # Run the program
     Write-Host "\nRunning the program:" -ForegroundColor Green
     Write-Host "----------------------------------------" -ForegroundColor DarkGray
-    & "bin\sdl_app.exe"
+    & "bin\gameClient.exe"
     Write-Host "----------------------------------------" -ForegroundColor DarkGray
 
     # Check exit code

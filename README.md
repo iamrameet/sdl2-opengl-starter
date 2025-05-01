@@ -1,41 +1,72 @@
-# SDL2 OpenGL Application
+# 2D Multiplayer Game
 
-A simple cross-platform application using SDL2 and OpenGL with GLAD. This project demonstrates how to set up a basic OpenGL rendering pipeline with shaders in C++.
+A cross-platform 2D vector-based multiplayer game built with C++, Modern OpenGL, SDL2, and ENet.
 
 ## Features
 
 - SDL2 for window creation and event handling
 - Modern OpenGL (4.0) with GLAD loader
 - GLSL shaders for rendering
-- Simple matrix math for transformations
-- Animated triangle with color interpolation
+- Vector-based graphics with GLM for mathematics
+- Client-server architecture for multiplayer
+- Voice chat support (planned)
 
 ## Project Structure
 
 ```
-.
-├── assets/            # Asset files
-│   └── shaders/       # GLSL shader files
-├── bin/               # Compiled binaries
-├── external/          # External dependencies
-│   ├── GLAD/          # OpenGL loader
-│   └── SDL2/          # Simple DirectMedia Layer
-├── include/           # Header files
-├── lib/               # Library files
-├── src/               # Source code
-│   ├── Core/          # Core game components
-│   ├── GameObjects/   # Game object implementations
-│   ├── Graphics/      # Rendering components
-│   ├── UI/            # User interface components
-│   └── main.cpp       # Main application code
-├── CMakeLists.txt     # CMake build configuration (alternative build)
-├── compile_and_run.ps1 # PowerShell build script (primary build method)
-└── README.md          # This file
+./
+├── CMakeLists.txt            # Root CMake configuration
+├── CMakeModules/             # Custom CMake find scripts
+├── assets/                   # Game assets: images, sounds, maps
+├── shaders/                  # GLSL shaders (vertex/fragment)
+├── engine/                   # Core engine modules (rendering, input, networking)
+│   ├── include/              # Engine header files
+│   ├── src/                  # Engine source files
+│   └── CMakeLists.txt        # Engine build configuration
+├── game/                     # Game-specific client logic
+│   ├── include/              # Game header files
+│   ├── src/                  # Game source files
+│   └── CMakeLists.txt        # Game build configuration
+├── server/                   # Dedicated multiplayer server code
+│   ├── include/              # Server header files
+│   ├── src/                  # Server source files
+│   └── CMakeLists.txt        # Server build configuration
+├── third_party/              # External dependencies
+│   ├── SDL2/                 # Simple DirectMedia Layer
+│   ├── GLAD/                 # OpenGL loader
+│   └── GLM/                  # OpenGL Mathematics
+├── docs/                     # Design docs and notes
+├── tests/                    # Unit tests
+├── tools/                    # Editors, map tools, etc.
+├── compile_and_run.ps1       # PowerShell build script (primary build method)
+└── README.md                 # This file
 ```
 
 ## Building and Running
 
-This project uses a simple PowerShell script for building and running. The script automatically sets up the Visual Studio environment, compiles the code, and handles asset copying.
+### Using CMake (Recommended)
+
+```bash
+# Create a build directory
+mkdir -p build
+cd build
+
+# Generate build files
+cmake ..
+
+# Build the project
+cmake --build . --config Release
+
+# Run the game client
+./bin/gameClient
+
+# Run the dedicated server (when implemented)
+./bin/gameServer
+```
+
+### Windows Build with PowerShell
+
+This project also includes a PowerShell script for building and running on Windows. The script automatically sets up the Visual Studio environment, compiles the code, and handles asset copying.
 
 ```powershell
 # Build and run (default)
@@ -51,72 +82,59 @@ This project uses a simple PowerShell script for building and running. The scrip
 .\compile_and_run.ps1 -Clean
 ```
 
-### Alternative: Using CMake
-
-If you prefer using CMake, you can build the project manually:
-
-```bash
-# Create a build directory
-mkdir build
-cd build
-
-# Generate build files
-cmake ..
-
-# Build the program
-cmake --build . --config Release
-
-# Run the program
-.\bin\Release\sdl_app.exe
-```
-
 ## Controls
 
+- **WASD/Arrow Keys**: Move the player
+- **Space/Left Mouse Button**: Shoot
 - **ESC**: Exit the application
 - **Close Window Button**: Exit the application
 
 ## Requirements
 
-- Windows with Visual Studio 2022 (Community or Build Tools)
 - C++17 compatible compiler
-- SDL2 (needs to be downloaded separately)
-- GLAD (needs to be downloaded separately)
-- Optional: CMake 3.10+ for using the CMake build system
-- Optional: PowerShell 5.1+ for using the PowerShell build script
+- CMake 3.10 or higher
+- Windows, Linux, or macOS
+- For Windows: Visual Studio 2022 (Community or Build Tools)
+- For PowerShell script: PowerShell 5.1+
 
-## Setting Up Dependencies
+## Dependencies
 
-This project requires SDL2 and GLAD, which are not included in the repository. Follow these steps to set them up:
+All dependencies are included in the `third_party` directory:
 
-### Setting up SDL2
+- **SDL2**: Window creation and input handling
+- **GLAD**: OpenGL function loader
+- **GLM**: OpenGL Mathematics library for vector/matrix operations
 
-1. Download SDL2 development libraries for Windows from [SDL's website](https://www.libsdl.org/download-2.0.php)
-2. Extract the contents to `external/SDL2/`
-3. Ensure the following directory structure:
-   ```
-   external/SDL2/
-   ├── include/     # Header files
-   └── lib/
-       └── x64/    # 64-bit libraries
-           ├── SDL2.dll
-           ├── SDL2.lib
-           └── SDL2main.lib
-   ```
+## Project Components
 
-### Setting up GLAD
+### Engine
 
-1. Go to the [GLAD web service](https://glad.dav1d.de/)
-2. Configure with:
-   - Language: C/C++
-   - Specification: OpenGL
-   - API: gl Version 4.0
-   - Profile: Compatibility
-   - Options: Check "Generate a loader"
-3. Click "Generate" and download the zip file
-4. Extract the following files to your project:
-   - `glad.h` → place in `external/GLAD/include/glad/`
-   - `khrplatform.h` → place in `external/GLAD/include/KHR/`
-   - `glad.c` → place in `external/GLAD/src/`
+The engine provides core functionality that can be reused across different games:
+
+- Rendering system with OpenGL
+- Input handling with SDL2
+- Audio system
+- Networking for multiplayer
+- Entity-Component System (ECS)
+
+### Game
+
+The game layer implements the specific game logic:
+
+- Player controls and movement
+- Enemy AI
+- Projectile physics
+- Game states (menu, play, pause)
+- UI elements
+
+### Server
+
+The server component handles the multiplayer aspects:
+
+- Game state synchronization
+- Client connections
+- Voice chat relay
+- Game logic validation
 
 ## License
 

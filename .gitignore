@@ -1,24 +1,17 @@
 # Build directories
 build/
 out/
-
-# External dependencies
-external/
+bin/
+lib/
 
 # Keep bin and lib directories but not their contents
-!bin/
-!lib/
-bin/*
-lib/*
 !bin/.gitkeep
 !lib/.gitkeep
 
-# Keep SDL2.dll and shader files
-!bin/SDL2.dll
-!bin/assets/
-!bin/assets/shaders/
-!bin/assets/shaders/*.vert
-!bin/assets/shaders/*.frag
+# Ignore third-party libraries
+third_party/SDL2/
+third_party/GLAD/
+third_party/GLM/
 
 # CMake generated files
 CMakeCache.txt
